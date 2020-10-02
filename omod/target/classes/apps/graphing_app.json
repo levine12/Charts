@@ -1,0 +1,32 @@
+[
+    {
+        "id": "${project.parent.artifactId}.appcomoros",
+        "description": "Text description of my app, not shown to regular user",
+        "extensionPoints": [
+            {
+                "id": "subApp.appscmrs",
+                "description": "Apps on the basic Apps App Home Page"
+            }
+        ],
+        "extensions": [
+            {
+                "id": "${project.parent.artifactId}.appId77",
+                "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+                "type": "link",
+                "label": "Add/Remove Charts",
+                "url": "graphing/addRemoveCharts.page",
+                "icon": "icon-search",
+                "requiredPrivilege": "App: graphing"
+            },             
+            {
+                "id": "${project.parent.artifactId}.patientDashboard.secondColumnFragments",
+                "extensionPointId": "patientDashboard.secondColumnFragments",
+                "extensionParams": {
+                    "provider": "graphing",
+                    "fragment": "displayChartsFromDashboardFrag"
+                }
+            }              
+        ]
+    }
+]
+

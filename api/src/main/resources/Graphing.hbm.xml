@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.graphing">
+  <class name="ChartType" table="chart_type">
+        <id column="id" name="id" type="int" unsaved-value="0">
+            <generator class="native"/>
+        </id>
+        <discriminator column="id" insert="false"/>
+        <property column="name" name="name" not-null="true"/>
+        <property column="date_created" name="dateCreated" not-null="true" type="java.util.Date"/>
+        <property column="uuid" name="uuid" not-null="true"/>
+    </class>  
+    
+    <class name="Chart" table="chart">
+        <id column="id" name="id" type="int" unsaved-value="0">
+            <generator class="native"/>
+        </id>
+        <discriminator column="id" insert="false"/>
+        <property column="xaxis_Label" name="xaxisLabel"/>
+        <property column="yaxis_Label" name="yaxisLabel"/>
+        <property column="chart_type_id" name="chartTypeId" not-null="true"/>
+        <property column="title" name="title"/>
+        <property column="date_created" name="dateCreated" not-null="true" type="java.util.Date"/>
+        <property column="voided" name="voided" not-null="true"/>
+        <property column="uuid" name="uuid" not-null="true"/>
+    </class>  
+    
+    <class name="ChartConcept" table="chart_concept">
+        <id column="id" name="id" type="int" unsaved-value="0">
+            <generator class="native"/>
+        </id>
+        <discriminator column="id" insert="false"/>
+        <property column="chart_id" name="chartId" not-null="true"/>
+        <property column="concept_id" name="conceptId" not-null="true"/>
+        <property column="color" name="color"/>
+        <property column="voided" name="voided" not-null="true"/>
+        <property column="uuid" name="uuid" not-null="true"/>
+    </class>      
+</hibernate-mapping>
+
+
+

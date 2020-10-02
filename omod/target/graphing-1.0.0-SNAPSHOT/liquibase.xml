@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet id="graphmodule-0" author="levine">
+        <sql>
+            drop table if exists chart_type;
+        </sql>        
+    </changeSet>    
+<changeSet id="graphmodule-1" author="levine">
+        <createTable tableName="chart_type">
+            <column name="id" type="int(11)" autoIncrement="true"> 
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"></column>
+            <column name="date_created" type="datetime"></column>
+            <column name="uuid" type="varchar(38)"></column>        
+        </createTable>
+    </changeSet> 
+    
+   <changeSet id="graphmodule-2" author="levine">
+        <sql>
+            drop table if exists chart;
+        </sql>        
+    </changeSet>    
+<changeSet id="graphmodule-3" author="levine">
+        <createTable tableName="chart">
+            <column name="id" type="int(11)" autoIncrement="true"> 
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="chart_type_id" type="int(11)">
+                <constraints nullable="false" foreignKeyName="chart_type_fk" references="chart_type(id)"/>
+            </column>
+            <column name="xaxis_Label" type="varchar(255)"></column>
+            <column name="yaxis_Label" type="varchar(255)"></column>
+            <column name="title" type="varchar(255)"></column>
+            <column name="date_created" type="datetime"></column>
+            <column name="voided" type="tinyint(1)"></column>
+            <column name="uuid" type="varchar(38)"></column>        
+        </createTable>
+    </changeSet> 
+    
+   <changeSet id="graphmodule-4" author="levine">
+        <sql>
+            drop table if exists chart_concept;
+        </sql>        
+    </changeSet>    
+<changeSet id="graphmodule-5" author="levine">
+        <createTable tableName="chart_concept">
+            <column name="id" type="int(11)" autoIncrement="true"> 
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="chart_id" type="int(11)">
+                <constraints nullable="false" foreignKeyName="chart_concept_chartid_fk" references="chart(id)"/>
+            </column>
+            <column name="concept_id" type="int(11)">
+                <constraints nullable="false" foreignKeyName="chart_concept_conceptid_fk" references="concept(concept_id)"/>
+            </column>
+            <column name="color" type="varchar(38)"></column>
+            <column name="voided" type="tinyint(1)"></column>
+            <column name="uuid" type="varchar(38)"></column>        
+        </createTable>
+    </changeSet> 
+
+
+</databaseChangeLog>
+
