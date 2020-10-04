@@ -142,8 +142,10 @@ jq( "#dialog-confirm-deleteChart" ).dialog({
                     <% if (chartInfo.graphChart.allChartConceptInfos) { %>
                         <% chartInfo.graphChart.allChartConceptInfos.each { chartConcept ->%>
                             '${chartConcept.conceptId}/${chartConcept.conceptName}/${chartConcept.color},' +
-                        <% } %> ' ')" >
+                        <% } %>
                     <% } %>
+                    ' ')" >
+
             </i>
 
             <em class="icon-trash delete-action" onclick="deleteChart(this,${chartInfo.chart.id})"</em>

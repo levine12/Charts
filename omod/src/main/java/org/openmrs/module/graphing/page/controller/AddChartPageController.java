@@ -40,15 +40,16 @@ public class AddChartPageController {
 				chartInfos.add(new ChartInfo(chart));
 			}
 		}
+		//getExtensionPoints(appFrameworkServiceHttpSession);
 		model.addAttribute("charttypes", ctList);
 		model.addAttribute("chartInfos", chartInfos);
 	}
 	
 	private void getExtensionPoints(AppFrameworkService appFrameworkService) {
 		List<Extension> exts = appFrameworkService.getAllEnabledExtensions();
-		System.out.println("EXTENSIONS");
+		System.out.println("\n\nEXTENSIONS");
 		for (Extension ext : exts) {
-			System.out.println(ext.getExtensionPointId());
+			System.out.println(ext.getExtensionPointId() + " label: " + ext.getLabel());
 		}
 	}
 	
