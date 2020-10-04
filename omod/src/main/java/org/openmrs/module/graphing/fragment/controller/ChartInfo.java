@@ -53,10 +53,16 @@ public class ChartInfo {
 		if (chartTypeName.contains("graph")) {
 			chartTypeName = "graph";
 			graphChart = new GraphChart(chart, patient, chartTypeName);
+			if (patient == null) { // in this case we only need to get chart info for add/remove charts; we're not displaying charts
+				return;
+			}
 			graphChart.setAllLineChartInfos(getConceptLineChartInfos(chart, patient));
 		} else if (chartTypeName.contains("bmi")) {
 			chartTypeName = "bmi";
 			graphChart = new GraphChart(chart, patient, chartTypeName);
+			if (patient == null) {
+				return;
+			}
 			graphChart.setAllLineChartInfos(getBMILineChartInfos(chart, patient));
 		} else if (chartTypeName.contains("visit")) {
 			chartTypeName = "visit";
@@ -89,9 +95,7 @@ public class ChartInfo {
 		ConceptNumeric conceptNumeric = Context.getConceptService().getConceptNumeric(conceptId);
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		String color = chartConcept.getColor();
-		if (patient == null) {
-			return null;
-		}
+		
 		Person person = Context.getPersonService().getPerson(patient.getPatientId());
 		List<Obs> allObs = Context.getObsService().getObservationsByPersonAndConcept(person, concept);
 		System.out.println("\n\nChartConceptInfo: " + conceptId + " color: " + color);
@@ -309,12 +313,15 @@ class GraphChart {
 		allChartConceptInfos = createChartConceptInfos(chart);
 	}
 	
-	private List<ChartConceptInfo> createChartConceptInfos(Chart chart) {
+	static List<ChartConceptInfo> createChartConceptInfos(Chart chart) {
 		List<ChartConceptInfo> chartConceptInfos = new ArrayList<ChartConceptInfo>();
 		int conceptId;
 		String conceptName;
 		List<ChartConcept> chartConcepts = Context.getService(ChartConceptService.class).getAllChartConceptsForChart(
 		    chart.getId());
+		if ((chartConcepts == null) || (chartConcepts.size() == 0)) { // FORMULA CHART, LIKE BMI, SO NO CONCEPTS
+			return null;
+		}
 		System.out.println("\n\nGET CONCEPTS FOR CHART: " + chart.getTitle() + " concepts size: " + chartConcepts.size());
 		for (ChartConcept chartConcept : chartConcepts) {
 			conceptId = chartConcept.getConceptId();
@@ -431,6 +438,8 @@ class HealthTrendChart {
 	
 	List<Concept> concepts = new ArrayList<Concept>();
 	
+	private List<ChartConceptInfo> allChartConceptInfos = new ArrayList<ChartConceptInfo>();
+	
 	public HealthTrendChart(Chart chart, Patient patient) {
 		System.out.println("\n\n\nHealthTrendCharts");
 		
@@ -444,6 +453,7 @@ class HealthTrendChart {
 			int conceptId = chartConcept.getConceptId();
 			String conceptName = Context.getConceptService().getConcept(conceptId).getDisplayString();
 		}
+		allChartConceptInfos = GraphChart.createChartConceptInfos(chart);
 		if (patient == null) {
 			return;
 		}

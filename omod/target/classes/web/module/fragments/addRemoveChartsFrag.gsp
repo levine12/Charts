@@ -126,8 +126,11 @@ jq( "#dialog-confirm-deleteChart" ).dialog({
         <% if (chartInfo.graphChart != null) { %>
             <td>${chartInfo.graphChart.xaxisLabel}</td><td>${chartInfo.graphChart.yaxisLabel}</td>
             <td>
-            <% chartInfo.graphChart.allChartConceptInfos.each { chartConcept ->%>
-                ${chartConcept.conceptId}/${chartConcept.conceptName}/${chartConcept.color},
+
+            <% if (chartInfo.graphChart.allChartConceptInfos) { %>
+                <% chartInfo.graphChart.allChartConceptInfos.each { chartConcept ->%>
+                    ${chartConcept.conceptId}/${chartConcept.conceptName}/${chartConcept.color},
+                <% } %>
             <% } %>
             </td>
 
@@ -136,26 +139,16 @@ jq( "#dialog-confirm-deleteChart" ).dialog({
             <i class="icon-pencil edit-action right" onclick="editGraphChart(
                 ${chartInfo.chart.id}, '${chartInfo.title}', ${chartInfo.chartTypeId}, '${chartInfo.chartTypeName}', 
                     '${chartInfo.graphChart.xaxisLabel}', '${chartInfo.graphChart.yaxisLabel}', 
-
-                    <% chartInfo.graphChart.allChartConceptInfos.each { chartConcept ->%>
-                        '${chartConcept.conceptId}/${chartConcept.conceptName}/${chartConcept.color},' +
-                    <% } %> ' ')" >
+                    <% if (chartInfo.graphChart.allChartConceptInfos) { %>
+                        <% chartInfo.graphChart.allChartConceptInfos.each { chartConcept ->%>
+                            '${chartConcept.conceptId}/${chartConcept.conceptName}/${chartConcept.color},' +
+                        <% } %> ' ')" >
+                    <% } %>
             </i>
 
             <em class="icon-trash delete-action" onclick="deleteChart(this,${chartInfo.chart.id})"</em>
             </td>
-        <% }  else if (chartInfo.bmiChart != null) {%>
-            <td>${chartInfo.bmiChart.xaxisLabel}</td><td>${chartInfo.bmiChart.yaxisLabel}</td>
-            <td>
-            </td>
-            <td>
-            <i class="icon-pencil edit-action right" onclick="editBmiChart(
-                ${chartInfo.chart.id}, '${chartInfo.title}', ${chartInfo.chartTypeId}, '${chartInfo.chartTypeName}', 
-                    '${chartInfo.bmiChart.xaxisLabel}', '${chartInfo.bmiChart.yaxisLabel}')">
-            </i>
-
-            <em class="icon-trash delete-action" onclick="deleteChart(this,${chartInfo.chart.id})"</em>
-            </td>
+        
         <% }  else if (chartInfo.healthTrendChart != null) {%>
                         <td></td><td></td>
                         <td>

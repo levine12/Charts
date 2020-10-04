@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.appframework.domain.Extension;
+import org.openmrs.module.appframework.service.AppFrameworkService;
 import org.openmrs.module.graphing.Chart;
 import org.openmrs.module.graphing.ChartConcept;
 import org.openmrs.module.graphing.ChartType;
@@ -19,6 +21,7 @@ import org.openmrs.module.graphing.api.ChartConceptService;
 import org.openmrs.module.graphing.api.ChartService;
 import org.openmrs.module.graphing.api.ChartTypeService;
 import org.openmrs.module.uicommons.util.InfoErrorMessageUtil;
+import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,7 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public class AddChartPageController {
 	
-	public void controller(HttpServletRequest request, PageModel model, HttpSession session) {
+	public void controller(HttpServletRequest request, PageModel model,
+	        @SpringBean("appFrameworkService") AppFrameworkService appFrameworkServiceHttpSession, HttpSession session) {
 		List<ChartType> ctList = Context.getService(ChartTypeService.class).getAllChartTypes();
 		List<Chart> charts = Context.getService(ChartService.class).getAllCharts();
 		List<ChartInfo> chartInfos = new ArrayList<ChartInfo>();
@@ -38,6 +42,14 @@ public class AddChartPageController {
 		}
 		model.addAttribute("charttypes", ctList);
 		model.addAttribute("chartInfos", chartInfos);
+	}
+	
+	private void getExtensionPoints(AppFrameworkService appFrameworkService) {
+		List<Extension> exts = appFrameworkService.getAllEnabledExtensions();
+		System.out.println("EXTENSIONS");
+		for (Extension ext : exts) {
+			System.out.println(ext.getExtensionPointId());
+		}
 	}
 	
 	public String post(HttpSession session, HttpServletRequest request,
